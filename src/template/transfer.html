@@ -1,0 +1,154 @@
+<html lang="en">
+  <head>
+    <title>Approved Transfer</title>
+    <style>
+      #page {
+        margin-top: 45mm;
+      }
+      body {
+        font-family: Serif, serif;
+        font-size: 12px;
+      }
+      .header {
+        font-weight: bold;
+        margin-bottom: 15px;
+      }
+
+      .row {
+        margin-bottom: 15px;
+      }
+
+      .data {
+        font-weight: bold;
+        text-decoration: underline;
+        padding: 0 7px;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="pageHeader"
+      style="
+        text-transform: uppercase;
+        text-align: center;
+        font-weight: bolder;
+        margin-bottom: 30px;
+      "
+    >
+      <table style="width: 100%; margin-bottom: 13px">
+        <tbody>
+          <tr>
+            <td style="width: 25%; text-align: center">{{{pictureHtml}}}</td>
+            <td style="width: 50%; text-align: center">
+              <div style="font-size: 25px; font-weight: bold">
+                REPUBLIC OF RWANDA
+              </div>
+              <div style="font-size: 25px; font-weight: bold">
+                NATIONAL PUBLIC PROSECUTION AUTHORITY
+              </div>
+              <div style="font-size: 25px; font-weight: bold">
+                ORGANE NATIONAL DE POURSUITE JUDICIAIRE
+              </div>
+              <div style="font-size: 25px; font-weight: bold">
+                UBUSHINJACYAHA BUKURU
+              </div>
+            </td>
+            <td style="width: 25%; text-align: center">{{{pictureHtml2}}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <table style="width: 100%">
+        <tbody>
+          <tr>
+            <td style="width: 15%"></td>
+            <td style="width: 25%">
+              <div
+                style="font-size: 20px; font-weight: bold; text-align: center"
+              >
+                P.O. Box 1328
+              </div>
+              <div style="font-size: 20px; font-weight: bold">
+                E-mail: info@nppa.gov.rw
+              </div>
+            </td>
+            <td style="width: 15%"></td>
+            <td style="width: 35%">
+              <div style="font-size: 20px; font-weight: bold">
+                Kigali – RWANDA
+              </div>
+              <div style="font-size: 20px; font-weight: bold">
+                <a href="https://www.nppa.gov.rw/" target="_blank"
+                  style="color: black;">Web site: www.nppa.gov.rw</a
+                >
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="page" style="padding: 70px 70px">
+      <hr
+        style="
+          width: 90%;
+          text-align: center;
+          border-style: double;
+          background-color: rgb(82, 56, 39);
+        "
+      />
+      <hr
+        style="
+          width: 90%;
+          text-align: center;
+          border-style: double;
+          height: 0.2cm;
+          background-color: rgb(82, 56, 39);
+        "
+      />
+      <table style="width: 100%">
+        <tbody>
+          <tr>
+            <td style="width: 15%"></td>
+            <td style="width: 25%"></td>
+            <td style="width: 15%"></td>
+            <td style="width: 35%">
+              <div style="font-size: 20px; font-weight: bold">
+                Kigali, kuwa {{{newDate}}}
+              </div>
+              <div style="font-size: 20px; font-weight: bold">
+                NºI / 1355 /D11/A/ONPJ/INSP
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="padding: 50px">
+      
+        <div style="font-size: 20px;margin-bottom: 25px;">
+           <div style="margin-bottom: 5px;"> Bwana {{{requestor}}} </div>
+           <div style="margin-bottom: 5px;"> {{{fromPosition}}} </div>
+           <div style="text-transform: uppercase;"> <u>{{{fromBranch}}}</u> </div>
+        </div>
+        <div style="font-size: 20px;margin-bottom: 25px;">
+          <u>Impamvu:</u> <span>Kwimurwa </span>
+        </div>
+        <div style="font-size: 20px;margin-bottom: 25px;">Bwana/Madam,</div>
+        <p style="font-size: 20px;">
+          Nshingiye ku ngingo ya
+          <span class="data">(ingingo)</span>y’Itegeko<span class="data"
+            >(itegeko)</span
+          >rigena Imitunganyirize, Imikorere n’Ububasha by’Ubushinjacyaha Bukuru
+          n’Ubushinjacyaha bwa Gisirikare;
+        </p>
+        <p style="font-size: 20px;">
+          Nkwandikiye nkumenyesha ko wimuriwe ku Rwego Rwisumbuye rwa
+          {{{toBranch}}} aho uzakomereza akazi kawe {{{toPosition}}}.
+        </p>
+        <p style="font-size: 20px;" >Usabwe kwihutira kuhagera ukimara kubona iyi baruwa.</p>
+        <p style="font-size: 20px;">Akazi keza.</p>
+        <p style="font-size: 20px;text-transform: uppercase;">{{{approver}}}</p>
+        <p style="font-size: 20px;text-transform: capitalize;">{{{approverPosition}}}</p>
+      </div>
+    </div>
+  </body>
+</html>

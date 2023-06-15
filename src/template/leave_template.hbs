@@ -1,0 +1,84 @@
+<html lang="en">
+<head>
+    <title>QT Leave form template</title>
+    <style>
+        body{
+            font-family: Serif, serif;
+            font-size: 12px;
+        }
+        .header{
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .row{
+            margin-bottom: 15px;
+        }
+
+        .data{
+            font-weight: bold;
+            text-decoration: underline;
+            padding: 0 7px;
+        }
+
+    </style>
+</head>
+    <body>
+    <div style="padding: 30px 70px;">
+        <table style="margin-bottom: 20px;">
+            <tbody>
+            <tr>
+                <td>
+                    {{{pictureHtml}}}
+                </td>
+                <td style="text-align: center;color: #0e3654;">
+                    <div style="font-size: 13px;font-weight: bold;margin-bottom: 3px;">QT GLOBAL SOFTWARE LTD</div>
+                    <div style="font-size: 11px;font-weight: bold;margin-bottom: 3px;">DEVELOP SECURE DEPLOY</div>
+
+                    <span style="font-size: 9px;color: #1a4f77;">
+                    4th floor, Telecom house, Kacyiru, Kigali, Rwanda https://qtsoftwareltd.com | info@qtsoftwareltd.com
+                Phone Number: 0788 309 936
+                </span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div>
+            <div class="header">PART A - EMPLOYEE</div>
+            <div class="row">Applicant’s Name: <span class="data">{{names}}</span> Date: <span class="data">{{date}}</span></div>
+            <div class="row">Days Applied for: <span class="data">{{days}}</span> Position: <span class="data">{{position}}</span></div>
+            <div class="row">Tel. Contact while on leave: <span class="data">{{phone}}</span></div>
+            <div class="row">From: <span class="data">{{startDate}}</span> To: <span class="data">{{endDate}}</span></div>
+            <div class="row">Return Date: <span class="data">{{returnDate}}</span></div>
+            <div class="row">Signature: <span class="data">___________</span></div>
+            <div class="row">Reason for taking leave/Leave Type: <span class="data">{{reason}}</span></div>
+            <div class="header">PART B – HRM</div>
+            <div class="row">Leave Days available this year <span class="data">{{available}}</span> already taken: <span class="data">{{taken}}</span></div>
+            <div class="row">Remaining Leave days <span class="data">{{remaining}}</span> Days now applied for: <span class="data">{{days}}</span></div>
+            <div class="row">Balance c/fwd_________________ Signature: _______________</div>
+            <div class="header">PART C – LINE MANAGER</div>
+            <div class="row">Approved
+                {{#if lineManagerApproved}}
+                <input type="checkbox" checked="checked">
+                {{else}}
+                    <input type="checkbox">
+                    {{/if}}
+                Disapproved {{#if lineManagerApproved}}
+                    <input type="checkbox">
+                {{else}}
+                    <input type="checkbox" checked="checked">
+                {{/if}}</div>
+            <div class="row">Reason for {{lineManagerAction}}: <span class="data">{{lineManagerReason}}</span></div>
+            <div class="row">Date: <span class="data">{{lineManagerDate}}</span> Signature: ____________________</div>
+            <div class="header">PART D - Name of the Interim/Acting: <span class="data">N/A</span></div>
+            <div class="header">PART E – Copy submitted to HR Department </div>
+            <div style="font-weight: bold">
+                N.B: Please be reminded that only it is not allowed to carry more that 5 days to the
+                next year other than in exceptional circumstances or for operational reasons. Such
+                deferment would only be on the written authority of the appropriate line manager who
+                would report the exception to his or her manager.
+            </div>
+        </div>
+    </div>
+    </body>
+</html>
