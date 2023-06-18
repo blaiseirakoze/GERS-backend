@@ -5,7 +5,7 @@ import { createUserSchema, changePasswordSchema } from "../validation";
 
 const router = express.Router();
 
-router.post("/create", validator(createUserSchema), UserController.create);
+router.post("/create", UserController.create);
 router.get("/view/:id", UserController.viewOne);
 router.get("/view", UserController.viewAll);
 router.put("/update/:id", UserController.update);

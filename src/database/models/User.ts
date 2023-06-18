@@ -49,7 +49,8 @@ module.exports = (sequelize, DataTypes) => {
       status: {
         type: DataTypes.ENUM,
         values: ["active", "blocked"],
-        allowNull: true
+        allowNull: true,
+        defaultValue:"active"
       },
       createdAt: {
         allowNull: false,
