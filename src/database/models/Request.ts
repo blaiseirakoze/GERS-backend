@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "approver",
         as: "approvedBy",
       });
+      Request.hasMany(models.RequestProcess, {
+        foreignKey: "requestId",
+        as: "requestProcess",
+      });
     }
   }
 
@@ -31,6 +35,11 @@ module.exports = (sequelize, DataTypes) => {
       documents: {
         type: DataTypes.TEXT,
         allowNull: true
+      },
+      status: {
+        type: DataTypes.ENUM,
+        values: ["pending", "under review", "missing information", "review and forward", "approved", "rejected"],
+        defaultValue: "pending"
       },
       createdAt: {
         allowNull: false,

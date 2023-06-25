@@ -23,58 +23,37 @@ class ServiceRequestService {
    */
   public static async create(
     information: any,
+    files: any,
     userId: string,
     transaction: any
   ) {
-    const approvedBySecretary = [
-      "lumpsum certificate",
-      "salary certificate",
-      "pay slip",
-      "service certificate",
-      "employment certificate",
-      "anticipative retirement",
-      "non anticipative retirement",
-    ]; // request approved by secretary general
-    const approvedByHr = ["furniture form", "refraichisment form"]; // request approved by HR and sent to logistic
-
     // check approver
     let role: any;
     let message;
-    if (inArray(approvedBySecretary, information?.requestType)) {
-      role = await Role.findOne({ where: { name: "secretary" } }); //get role details of secretary general
-      message = "Cannot find Secretary General,Please contact Administrator.";
-    } else {
-      role = await Role.findOne({ where: { name: "hr" } }); //get role details of hr
-      message = "Cannot Human Resource Manager,Please contact Administrator.";
+    let documents = [];
+    if (files.documents !== undefined) {
+      for (const doc of files.documents) {
+        documents.push(doc.filename);
+      }
     }
-    const approver = await User.findOne({ where: { roleId: role.id } }); //get user with role
-
-    if (!approver) {
-      await transaction.rollback();
-      // return
-      return {
-        status: 404,
-        message,
-      };
-    }
-    const serviceRequest = await Request.create(
-      { ...information, approver: approver.id },
+    const request = await Request.create(
+      { ...information, documents: documents.toString(), requester: userId, approver: information.approver },
       {
         transaction,
       }
     );
-    if (serviceRequest) {
-      const request = await RequestProcess.create(
-        { serviceRequestId: Request.id, userId },
+    if (request) {
+      const requestProcess = await RequestProcess.create(
+        { requestId: request.id, userId },
         { transaction }
       );
-      if (request) {
+      if (requestProcess) {
         // create logs
         await createLogs(
           {
             action: "create",
-            description: "create service request",
-            module: "service request",
+            description: "create request",
+            module: "request",
             createdBy: userId,
           },
           transaction
@@ -96,19 +75,17 @@ class ServiceRequestService {
   public static async viewOne(id: string) {
     const serviceRequest = await Request.findOne({
       where: { id },
-      // include: [
-      //   {
-      //     model: User,
-      //     as: "requestedBy",
-      //     include: { model: Employee, include: { model: Position } },
-      //   },
-      //   {
-      //     model: User,
-      //     as: "approvedBy",
-      //     include: { model: Employee, include: { model: Position } },
-      //   },
-      //   { model: RequestProcess },
-      // ],
+      include: [
+        {
+          model: User,
+          as: "requestedBy",
+        },
+        {
+          model: User,
+          as: "approvedBy",
+        },
+        { model: RequestProcess, as: "requestProcess" },
+      ],
     });
     if (!serviceRequest) {
       return { status: 404, message: "service request not found" };
@@ -121,7 +98,12 @@ class ServiceRequestService {
    */
   public static async viewAll() {
     const serviceRequests = await Request.findAll({
-      include: [],
+      order: [["createdAt", "DESC"]],
+      include: [
+        { model: User, as: "requestedBy", include: { model: Role, as: "role" } },
+        { model: User, as: "approvedBy", include: { model: Role, as: "role" } },
+        { model: RequestProcess, as: "requestProcess", include: { model: User, as: "createdBy" } },
+      ],
     });
     return { status: 200, message: "service requests", data: serviceRequests };
   }

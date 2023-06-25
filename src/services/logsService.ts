@@ -27,7 +27,9 @@ class LogsService {
      * @returns 
      */
     public static async viewAll() {
-        const logs = await Logs.findAll();
+        const logs = await Logs.findAll({
+            order: [['createdAt', 'DESC']],
+        });
         return { status: 200, message: 'logs', data: logs }
     }
     /**

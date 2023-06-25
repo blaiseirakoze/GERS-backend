@@ -14,7 +14,7 @@ module.exports = {
       },
       status: {
         type: Sequelize.ENUM,
-        values: ["pending", "clarification needed", "approved", "rejected"],
+        values: ["pending", "under review", "missing information", "review and forward", "approved", "rejected"],
         defaultValue: "pending"
       },
       requestId: {
@@ -23,6 +23,13 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
         references: { model: "requests", key: "id" },
+      },
+      userId: {
+        type: Sequelize.UUID,
+        allowNull: true,
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+        references: { model: "users", key: "id" },
       },
       createdAt: {
         allowNull: false,

@@ -45,6 +45,7 @@ class UserService {
         }
         return { status: 200, message: 'role', data: role }
     }
+    
     /**
      * view all
      * @returns 

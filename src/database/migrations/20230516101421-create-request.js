@@ -16,6 +16,11 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: true
       },
+      status: {
+        type: Sequelize.ENUM,
+        values: ["pending", "under review", "missing information", "review and forward", "approved", "rejected"],
+        defaultValue: "pending"
+      },
       requester: {
         type: Sequelize.UUID,
         allowNull: true,

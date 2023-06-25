@@ -1,9 +1,10 @@
 import express from "express";
 import RequestController from "../controllers/requestController";
+import { multerUploads } from "../middlewares/multer";
 
 const router = express.Router();
 
-router.post("/create", RequestController.create);
+router.post("/create", multerUploads, RequestController.create);
 router.get("/view/:id", RequestController.viewOne);
 router.get("/view", RequestController.viewAll);
 router.put("/update/:id", RequestController.update);

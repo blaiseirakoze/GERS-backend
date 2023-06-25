@@ -19,16 +19,18 @@ class ServiceRequestController {
     try {
       transaction = await sequelize.transaction();
       const information = req.body;
+      const files = req.files;
       const loggedInUserId = req?.user?.userId;
       const response: any = await RequestService.create(
         information,
+        files,
         loggedInUserId,
         transaction
       );
       if (response) {
         return res.status(response.status).json(response);
       }
-    } catch (error) {
+    } catch (error) {      
       await transaction?.rollback();
       return res.status(500).json({ message: "Internal server error" });
     }
@@ -63,6 +65,8 @@ class ServiceRequestController {
         return res.status(response.status).json(response);
       }
     } catch (error) {
+      console.log("error ------------------------ ", error);
+
       return res.status(500).json({ message: "Internal server error" });
     }
   }
