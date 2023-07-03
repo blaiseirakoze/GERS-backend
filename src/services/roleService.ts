@@ -10,7 +10,7 @@ const { Role } = model;
 /**
  * role service
  */
-class UserService {
+class RoleService {
     /**
      * create
      * @param information 
@@ -124,4 +124,4 @@ class UserService {
     }
 }
 
-export default UserService;
+export default RoleService;

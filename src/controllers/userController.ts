@@ -65,7 +65,8 @@ class UserController {
      */
     static async viewAll(req: Request, res: Response) {
         try {
-            const response: any = await UserService.viewAll();
+            const role = req.query.role;
+            const response: any = await UserService.viewAll(role);
             if (response) {
                 return res.status(response.status).json(response);
             }

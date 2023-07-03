@@ -8,6 +8,12 @@ module.exports = (sequelize, DataTypes) => {
       Tender.belongsTo(models.User, {
         foreignKey: "winner"
       });
+      Tender.belongsTo(models.Request, {
+        foreignKey: "requestId"
+      });
+      Tender.hasMany(models.TenderDocument, {
+        foreignKey: "tenderId", as: "tenderDocuments"
+      });
     }
   }
 

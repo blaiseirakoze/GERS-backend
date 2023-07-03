@@ -90,10 +90,15 @@ class UserService {
      * view all users
      * @returns
      */
-    public static async viewAll() {
+    public static async viewAll(role) {
+        const where = {}
+        if (role) {
+            const rl = await Role.findOne({ where: { name: role } });
+            where['roleId'] = rl.id;
+        }
         const users = await User.findAll({
+            where,
             include: [{ model: Role, as: "role" }],
-
         });
         return { status: 200, message: 'users', data: users }
     }

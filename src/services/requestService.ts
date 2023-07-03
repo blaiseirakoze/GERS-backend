@@ -27,9 +27,6 @@ class ServiceRequestService {
     userId: string,
     transaction: any
   ) {
-    // check approver
-    let role: any;
-    let message;
     let documents = [];
     if (files.documents !== undefined) {
       for (const doc of files.documents) {
@@ -37,7 +34,7 @@ class ServiceRequestService {
       }
     }
     const request = await Request.create(
-      { ...information, documents: documents.toString(), requester: userId, approver: information.approver },
+      { ...information, documents: documents.toString(), requester: userId },
       {
         transaction,
       }
@@ -80,10 +77,10 @@ class ServiceRequestService {
           model: User,
           as: "requestedBy",
         },
-        {
-          model: User,
-          as: "approvedBy",
-        },
+        // {
+        //   model: User,
+        //   as: "approvedBy",
+        // },
         { model: RequestProcess, as: "requestProcess" },
       ],
     });
@@ -98,11 +95,14 @@ class ServiceRequestService {
    */
   public static async viewAll() {
     const serviceRequests = await Request.findAll({
-      order: [["createdAt", "DESC"]],
+      order: [['requestProcess', 'createdAt', 'ASC']],
       include: [
         { model: User, as: "requestedBy", include: { model: Role, as: "role" } },
-        { model: User, as: "approvedBy", include: { model: Role, as: "role" } },
-        { model: RequestProcess, as: "requestProcess", include: { model: User, as: "createdBy" } },
+        {
+          model: RequestProcess,
+          as: "requestProcess",
+          include: { model: User, as: "createdBy" },
+        },
       ],
     });
     return { status: 200, message: "service requests", data: serviceRequests };
@@ -115,36 +115,45 @@ class ServiceRequestService {
   public static async update(
     id: string,
     information: any,
+    files: any,
     userId: string,
     transaction: any
   ) {
-    // check service request exist
-    const serviceRequest = await Request.findOne({ where: { id } });
-    if (!serviceRequest) {
+    // check request exist
+    const request = await Request.findOne({ where: { id } });
+    if (!request) {
       await transaction.rollback();
-      return { status: 404, message: "service request not found" };
+      return { status: 404, message: "request not found" };
     }
-    const updatedServiceRequest = await Request.update(
-      { ...information },
+    // handle docs
+    let documents = [];
+    if (files.documents !== undefined) {
+      for (const doc of files.documents) {
+        documents.push(doc.filename);
+      }
+    }
+    // update
+    const updatedRequest = await request.update(
+      { ...information, status: "pending", documents: documents ? documents.toString() : information?.documents },
       { transaction }
     );
-    // return
-    if (updatedServiceRequest) {
-      const updatedRequest = await RequestProcess.create(
+
+    if (updatedRequest) {
+      const updatedRequestProcess = await RequestProcess.create(
         {
-          serviceRequestId: id,
-          status: information.status ? information.status : "pending",
+          requestId: id,
+          status: "pending",
           userId,
         },
         { transaction }
       );
-      if (updatedRequest) {
+      if (updatedRequestProcess) {
         // create logs
         await createLogs(
           {
             action: "update",
-            description: "update service request",
-            module: "service request",
+            description: "update request",
+            module: "request",
             createdBy: userId,
           },
           transaction
@@ -164,51 +173,33 @@ class ServiceRequestService {
    * @param information
    * @returns
    */
-  public static async changeStatus(
-    id: string,
-    information: any,
-    userId: string,
-    transaction: any
-  ) {
+  public static async changeStatus(id: string, information: any, userId: string, transaction: any) {
     const { status, comment } = information;
-    // check service request exist
-    const serviceRequest = await Request.findOne({
+    // check  request exist
+    const request = await Request.findOne({
       where: { id },
       //   include: { model: RequestProcess },
     });
-    if (!serviceRequest) {
+    if (!request) {
       await transaction.rollback();
-      return { status: 404, message: "service request not found" };
+      return { status: 404, message: "request not found" };
     }
-    // update service request status
-    const updatedServiceRequest = await Request.update(
-      { status },
-      { transaction }
-    );
-    if (updatedServiceRequest) {
+    // update  request status
+    const updatedRequest = await request.update({ status }, { transaction });
+    if (updatedRequest) {
       // create request process
-      const updatedRequest = await RequestProcess.create(
-        { serviceRequestId: id, status, comment, userId },
+      const createRequestProcess = await RequestProcess.create(
+        { requestId: id, status, comment, userId },
         { transaction }
       );
-      if (updatedRequest) {
+      if (createRequestProcess) {
         // create logs
         await createLogs(
-          {
-            action: "change status",
-            description: "change status service request",
-            module: "service request",
-            createdBy: userId,
-          },
-          transaction
-        );
+          { action: "change status", description: "change status request", module: "request", createdBy: userId },
+          transaction);
         await transaction.commit();
         // return
-        return {
-          status: 201,
-          message: "Success",
-          data: updatedRequest,
-        };
+        return { status: 201, message: "Success", data: updatedRequest };
       }
     }
   }
@@ -281,7 +272,6 @@ class ServiceRequestService {
   public static async search(query: any, userId: string) {
     const includes = [
       { model: User, as: "requestedBy" },
-      { model: User, as: "approvedBy" },
     ];
     const data = await filter(Request, Op, query, includes);
     if (!data) {

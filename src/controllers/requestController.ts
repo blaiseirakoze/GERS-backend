@@ -64,9 +64,7 @@ class ServiceRequestController {
       if (response) {
         return res.status(response.status).json(response);
       }
-    } catch (error) {
-      console.log("error ------------------------ ", error);
-
+    } catch (error) {      
       return res.status(500).json({ message: "Internal server error" });
     }
   }
@@ -83,9 +81,11 @@ class ServiceRequestController {
       const id = req.params.id;
       const information = req.body;
       const loggedInUserId = req?.user?.userId;
+      const files = req.files;
       const response: any = await RequestService.update(
         id,
         information,
+        files,
         loggedInUserId,
         transaction
       );

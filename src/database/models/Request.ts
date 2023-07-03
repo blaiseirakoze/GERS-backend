@@ -9,10 +9,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "requester",
         as: "requestedBy",
       });
-      Request.belongsTo(models.User, {
-        foreignKey: "approver",
-        as: "approvedBy",
-      });
+      // Request.belongsTo(models.User, {
+      //   foreignKey: "approver",
+      //   as: "approvedBy",
+      // });
       Request.hasMany(models.RequestProcess, {
         foreignKey: "requestId",
         as: "requestProcess",
@@ -27,6 +27,10 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         type: DataTypes.UUIDV4,
         defaultValue: uuidv4,
+      },
+      title: {
+        type: DataTypes.STRING,
+        allowNull: true
       },
       reason: {
         type: DataTypes.TEXT,
@@ -51,6 +55,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         defaultValue: new Date(),
       },
+      tenderPublished: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+      }
     },
     {
       tableName: "requests",
