@@ -18,7 +18,8 @@ class BidController {
             transaction = await sequelize.transaction();
             const information = req.body;
             const loggedInUserId = req?.user?.userId;
-            const response: any = await BidService.create({ ...information, bidder: loggedInUserId }, transaction);
+            const bidDocuments = req.files.bidDocuments;
+            const response: any = await BidService.create({ ...information, bidder: loggedInUserId, bidDocuments }, transaction);
             if (response) {
                 return res.status(response.status).json(response);
             }
@@ -50,9 +51,11 @@ class BidController {
      * @param res 
      * @returns 
      */
-    static async viewAll(req: Request, res: Response) {
+    static async viewAll(req: any, res: Response) {
         try {
-            const response: any = await BidService.viewAll();
+            const tenderId = req.params.tenderId;
+            const loggedInUser = req?.user;
+            const response: any = await BidService.viewAll(tenderId, loggedInUser);
             if (response) {
                 return res.status(response.status).json(response);
             }
@@ -77,6 +80,23 @@ class BidController {
             }
         } catch (error) {
             return res.status(500).json({ message: 'Internal server error' });
+        }
+    }
+    /**
+     * change status
+     * @param req 
+     * @param res 
+     * @returns 
+     */
+    static async changeStatus(req: any, res: Response) {
+        try {
+            const { tenderId, id, bidder } = req.query;
+            const response = await BidService.changeStatus({ tenderId, id, bidder });
+            if (response) {
+                return res.status(response.status).json(response);
+            }
+        } catch (error) {            
+            return res.status(500).json({ message: "internal server error" });
         }
     }
     /**
