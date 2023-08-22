@@ -5,7 +5,7 @@ import { createLogs } from '../helpers/logs';
 import { filter } from '../helpers/common_functions';
 import { Op } from 'sequelize';
 
-const { Request, Bid } = model;
+const { Request, Bid, User, Tender } = model;
 
 /**
  * bid service
@@ -18,6 +18,8 @@ class BidService {
      */
     public static async create(information: any, transaction: any) {
         const { bidDocuments, ...bidInfo } = information;
+        console.log();
+
         // check bid exist
         const bidFound = await Bid.findOne({
             where: { [Op.and]: [{ bidder: bidInfo.bidder }, { tenderId: bidInfo.tenderId }] }
@@ -57,8 +59,17 @@ class BidService {
      * view all
      * @returns 
      */
-    public static async viewAll() {
-        const bids = await Bid.findAll();
+    public static async viewAll(tenderId, loggedInUser) {
+        const { userId, role } = loggedInUser;
+        const whereParams = { tenderId };
+
+        if (role === "supplier") {
+            whereParams["bidder"] = userId;
+        }
+        const bids = await Bid.findAll({
+            where: whereParams,
+            include: { model: User, as: "bidBy" }
+        });
         return { status: 200, message: 'bids', data: bids }
     }
     /**
@@ -82,6 +93,17 @@ class BidService {
                 message: "Success",
                 data: updatedbid,
             };
+        }
+    }
+    public static async changeStatus(info:any) {
+        const {id, tenderId, bidder} = info;
+        const bid = await Bid.findOne({ where: { id } });
+        const tender = await Tender.findOne({ where: { id } });
+        await Bid.update({ status: "rejected" }, { where: { tenderId } });
+        await bid.update({ status: "approved" });
+        return {
+            status:200,
+            message:"bid approved"
         }
     }
     /**

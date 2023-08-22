@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class Bid extends Model {
     static associate(models) {
       Bid.belongsTo(models.User, {
-        foreignKey: "bidder"
+        foreignKey: "bidder", as:"bidBy"
       });
       Bid.belongsTo(models.Tender, {
         foreignKey: "tenderId"

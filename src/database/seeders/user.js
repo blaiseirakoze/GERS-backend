@@ -8,8 +8,8 @@ module.exports = {
         {
           id: '9e1ce00f-75cd-4f34-8fcc-c05c46d64f44',
           username: 'admin',
-          email: 'admim@user.com',
-          password: bcrypt.hashSync('3XjWTMVqMe@3p/#!', 10),
+          email: 'admin@user.com',
+          password: bcrypt.hashSync('admin123', 10),
           firstName: 'super',
           lastName: 'admin',
           phone: '',

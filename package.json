@@ -8,8 +8,7 @@
     "lint": "eslint . --ext .ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "seeds": "sequelize-cli db:seed:undo:all && yarn sequelize-cli db:seed:all",
-    "migrates": "sequelize-cli db:migrate",
-    "swagger": "swagger spec"
+    "migrates": "sequelize-cli db:migrate"
   },
   "keywords": [],
   "author": "",

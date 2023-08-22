@@ -9,10 +9,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "requester",
         as: "requestedBy",
       });
-      // Request.belongsTo(models.User, {
-      //   foreignKey: "approver",
-      //   as: "approvedBy",
-      // });
       Request.hasMany(models.RequestProcess, {
         foreignKey: "requestId",
         as: "requestProcess",
