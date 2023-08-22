@@ -5,26 +5,29 @@ dotenv.config();
 const config =
     {
       development : {
-        username: 'admin',
-        password: 'admin@123',
-        database: 'approval_db',
-        host: 'localhost',
+        username: process.env.DB_USERNAME,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT,
         dialect: "mysql",
         logging:true
       },
       test: {
         username: process.env.DB_USERNAME,
         password: process.env.DB_PASSWORD,
-        database: process.env.DB_NAME_TEST,
+        database: process.env.DB_NAME,
         host: process.env.DB_HOST,
-        dialect: "mysql"
+        port: process.env.DB_PORT,
+        dialect: "postgres"
       },
       production: {
         username: process.env.DB_USERNAME_PRO,
         // password: process.env.DB_PASSWORD_PRO,
         database: process.env.DB_NAME_PRO,
+        port: process.env.DB_PORT,
         host: process.env.DB_HOST,
-        dialect: "mysql"
+        dialect: "postgres"
       }
     }
 module.exports = config;

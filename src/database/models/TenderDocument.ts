@@ -10,7 +10,6 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
-
   TenderDocument.init(
     {
       id: {

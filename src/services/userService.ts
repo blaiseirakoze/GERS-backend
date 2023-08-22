@@ -58,7 +58,7 @@ class UserService {
         if (userFound) {
             return { status: 409, message: "User already exist" };
         }
-        const password = await hashPassword(information.password ? information.password : "3XjWTMVqMe@3p/#!");
+        const password = await hashPassword(information.password ? information.password : "paloma123");
         const user = await User.create({ ...information, password });
         // return
         if (user) {

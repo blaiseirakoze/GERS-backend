@@ -58,9 +58,10 @@ class ServiceRequestController {
    * @param res
    * @returns
    */
-  static async viewAll(req: Request, res: Response) {
+  static async viewAll(req: any, res: Response) {
     try {
-      const response: any = await RequestService.viewAll();
+      const loggedInUser = req?.user;
+      const response: any = await RequestService.viewAll(loggedInUser);
       if (response) {
         return res.status(response.status).json(response);
       }

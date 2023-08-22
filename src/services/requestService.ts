@@ -93,9 +93,15 @@ class ServiceRequestService {
    * view all
    * @returns
    */
-  public static async viewAll() {
+  public static async viewAll(loggedInUser: any) {
+    const { role, userId } = loggedInUser;
+    const where = {};
+    if (role != "risa") {
+      where["requester"] = userId;
+    }
     const serviceRequests = await Request.findAll({
       order: [['requestProcess', 'createdAt', 'ASC']],
+      where: where,
       include: [
         { model: User, as: "requestedBy", include: { model: Role, as: "role" } },
         {

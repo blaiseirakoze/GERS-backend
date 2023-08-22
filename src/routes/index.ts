@@ -6,6 +6,7 @@ import role from "./role";
 import logs from "./logs";
 import request from "./request";
 import tender from "./tender";
+import bid from "./bid";
 import CheckDbConnection from "../middlewares/checkDbConnection";
 
 const router = express.Router();
@@ -15,6 +16,7 @@ router.use("/api/role", CheckDbConnection.connect, UserAuthManager.authenticate,
 router.use("/api/logs", CheckDbConnection.connect, UserAuthManager.authenticate, logs);
 router.use("/api/request", CheckDbConnection.connect, UserAuthManager.authenticate, request);
 router.use("/api/tender", CheckDbConnection.connect, UserAuthManager.authenticate, tender);
+router.use("/api/bid", CheckDbConnection.connect, UserAuthManager.authenticate, bid);
 
 export default router;
 
