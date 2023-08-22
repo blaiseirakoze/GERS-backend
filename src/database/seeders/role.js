@@ -27,14 +27,7 @@ module.exports = {
         {
           id: 'ff05b959-2f0d-4385-ab0d-3b3748449856',
           name: 'company',
-          label:'company',
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          id: '6d33b4c8-0f99-4acb-87c8-aa03b6a01e4c',
-          name: 'minecofine',
-          label:'minecofine',
+          label:'institution',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
