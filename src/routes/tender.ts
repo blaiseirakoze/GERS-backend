@@ -1,7 +1,6 @@
 import express from "express";
 import TenderController from "../controllers/tenderController";
-import validator from "../middlewares/validator";
-import { createRoleSchema } from "../validation";
+import { multerUploads } from "../middlewares/multer";
 
 const router = express.Router();
 
@@ -12,5 +11,7 @@ router.put("/update/:id", TenderController.update);
 router.delete("/delete/:id", TenderController.delete);
 router.get("/datatable", TenderController.datatable);
 router.get("/search", TenderController.search);
+router.put("/upload-document/:id", multerUploads, TenderController.uploadDocs);
+router.put("/change-status", TenderController.changeStatus);
 
 export default router;

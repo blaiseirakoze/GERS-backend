@@ -6,10 +6,10 @@ module.exports = (sequelize, DataTypes) => {
   class Tender extends Model {
     static associate(models) {
       Tender.belongsTo(models.User, {
-        foreignKey: "winner"
+        foreignKey: "winner", as:"supplier"
       });
       Tender.belongsTo(models.Request, {
-        foreignKey: "requestId"
+        foreignKey: "requestId", as:"request"
       });
       Tender.hasMany(models.TenderDocument, {
         foreignKey: "tenderId", as: "tenderDocuments"
@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       status: {
         type: DataTypes.ENUM,
-        values: ["opened", "published", "closed"],
+        values: ["opened", "closed", "delivered"],
         defaultValue: "opened"
       },
       openDate: {
@@ -53,6 +53,22 @@ module.exports = (sequelize, DataTypes) => {
       publishWinnerDate: {
         allowNull: true,
         type: DataTypes.DATE
+      },
+      deliveryNote: {
+        type: DataTypes.TEXT,
+        allowNull: true
+      },
+      receipt: {
+        type: DataTypes.TEXT,
+        allowNull: true
+      },
+      contract:{
+        type: DataTypes.TEXT,
+        allowNull: true
+      },
+      delivered:{
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
       },
       createdAt: {
         allowNull: false,
