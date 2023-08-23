@@ -5,7 +5,7 @@ import { createLogs } from '../helpers/logs';
 import { filter } from '../helpers/common_functions';
 import { Op } from 'sequelize';
 
-const { Tender, TenderDocument, Request } = model;
+const { Tender, TenderDocument, Request, User } = model;
 
 /**
  * tender service
@@ -49,7 +49,12 @@ class TenderService {
      * @param id 
      */
     public static async viewOne(id: string) {
-        const tender = await Tender.findOne({ where: { id } });
+        const tender = await Tender.findOne({
+            where: { id },
+            include: [{ model: TenderDocument, as: "tenderDocuments" },
+            { model: User, as: "supplier" },
+            { model: Request, as: "request" }]
+        });
         if (!tender) {
             return { status: 404, message: "tender not found" };
         }
@@ -86,6 +91,53 @@ class TenderService {
                 status: 201,
                 message: "Success",
                 data: updatedtender,
+            };
+        }
+    }
+    /**
+     * update
+     * @param information 
+     * @returns 
+     */
+    public static async uploadDocs(id: string, information: any, userId: string) {
+        // check role exist
+        const tender = await Tender.findOne({ where: { id } });
+        if (!tender) {
+            return { status: 404, message: "tender not found" };
+        }
+        const updatedtender = await tender.update(information);
+        // return
+        if (updatedtender) {
+            // create logs
+            await createLogs({ action: "upload delivery note", description: "upload delivery note tender", module: "tender", createdBy: userId });
+            return {
+                status: 201,
+                message: "Success",
+                data: updatedtender,
+            };
+        }
+    }
+    /**
+     * update
+     * @param information 
+     * @returns 
+     */
+    public static async changeStatus(information: any, userId: string) {
+        const { id, status } = information;
+        // check role exist
+        const tender = await Tender.findOne({ where: { id } });
+        if (!tender) {
+            return { status: 404, message: "tender not found" };
+        }
+        const changetenderstatus = await tender.update({ delivered: true });
+        // return
+        if (changetenderstatus) {
+            // create logs
+            await createLogs({ action: "change status", description: "change status tender", module: "tender", createdBy: userId });
+            return {
+                status: 201,
+                message: "Success",
+                data: changetenderstatus,
             };
         }
     }

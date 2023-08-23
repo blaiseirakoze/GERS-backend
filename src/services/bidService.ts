@@ -95,15 +95,20 @@ class BidService {
             };
         }
     }
-    public static async changeStatus(info:any) {
-        const {id, tenderId, bidder} = info;
+    /**
+     * change status
+     * @param info 
+     * @returns 
+     */
+    public static async changeStatus(info: any) {
+        const { id, tenderId, bidder } = info;
         const bid = await Bid.findOne({ where: { id } });
-        const tender = await Tender.findOne({ where: { id } });
         await Bid.update({ status: "rejected" }, { where: { tenderId } });
         await bid.update({ status: "approved" });
+        await Tender.update({ winner: bidder }, { where: { id: tenderId } });
         return {
-            status:200,
-            message:"bid approved"
+            status: 200,
+            message: "bid approved"
         }
     }
     /**

@@ -8,7 +8,7 @@ const storage = multer.diskStorage({
     let destPath = path.join(__dirname, '../../../GERS-frontend/src/files');
     cb(null, destPath);
   },
-  filename: (req, file, cb) => {
+  filename: (req, file, cb) => {    
     const fileName = file.fieldname + '-' + Date.now() + path.extname(file.originalname);
     cb(null, fileName);
   }
@@ -16,7 +16,10 @@ const storage = multer.diskStorage({
 
 const multerUploads = multer({ storage }).fields([
   { name: 'documents', maxCount: 5 },
-  { name: 'bidDocuments', maxCount: 5 }
+  { name: 'bidDocuments', maxCount: 5 },
+  { name: 'deliveryNote', maxCount: 2 },
+  { name: 'receipt', maxCount: 2 },
+  { name: 'contract', maxCount: 2 },
 ]);
 
 export { multerUploads };

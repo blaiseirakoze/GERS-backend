@@ -81,6 +81,54 @@ class TenderController {
         }
     }
     /**
+    * update
+    * @param req 
+    * @param res 
+    * @returns 
+    */
+    static async uploadDocs(req: any, res: Response) {
+        try {
+            const id = req.params.id;
+            const information = req.body;
+            const loggedInUserId = req?.user?.userId;
+
+            const deliveryNote = req.files?.deliveryNote;
+            const receipt = req.files?.receipt;
+            const contract = req.files?.contract;
+
+            if (deliveryNote) information['deliveryNote'] = deliveryNote[0].filename;
+            if (receipt) information['receipt'] = receipt[0].filename;
+            if (contract) information['contract'] = contract[0].filename;
+            const response: any = await TenderService.uploadDocs(id, information, loggedInUserId);
+            if (response) {
+                return res.status(response.status).json(response);
+            }
+        } catch (error) {
+            return res.status(500).json({ message: 'Internal server error' });
+        }
+    }
+    /**
+    * delete
+    * @param req 
+    * @param res 
+    * @returns 
+    */
+    static async changeStatus(req: any, res: Response) {
+        try {
+            const id = req.query.id;
+            const status = req.query.status;
+            const loggedInUserId = req?.user?.userId;
+            const response: any = await TenderService.changeStatus({ id, status }, loggedInUserId);
+            if (response) {
+                return res.status(response.status).json(response);
+            }
+        } catch (error) {  
+            console.log("error ----------------- ", error);
+                      
+            return res.status(500).json({ message: 'Internal server error' });
+        }
+    }
+    /**
      * delete
      * @param req 
      * @param res 

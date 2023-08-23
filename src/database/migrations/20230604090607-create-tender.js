@@ -18,7 +18,7 @@ module.exports = {
       },
       status: {
         type: Sequelize.ENUM,
-        values: ["opened", "published", "closed"],
+        values: ["opened", "closed", "delivered"],
         defaultValue: "opened"
       },
       winner: {
