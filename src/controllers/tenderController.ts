@@ -24,6 +24,8 @@ class TenderController {
                 return res.status(response.status).json(response);
             }
         } catch (error) {
+            console.log("error ------------------------------- ", error);
+            
             await transaction.rollback();
             return res.status(500).json({ message: 'Internal server error' });
         }
@@ -122,9 +124,7 @@ class TenderController {
             if (response) {
                 return res.status(response.status).json(response);
             }
-        } catch (error) {  
-            console.log("error ----------------- ", error);
-                      
+        } catch (error) {                        
             return res.status(500).json({ message: 'Internal server error' });
         }
     }

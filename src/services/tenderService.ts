@@ -33,7 +33,8 @@ class TenderService {
             await request.update({ tenderPublished: true }, { transaction });
             // create tender required documents
             for (const doc of documents) {
-                await TenderDocument.create({ ...doc, tenderId: tender.id }, { transaction });
+                const { id, ...newDoc } = doc;
+                await TenderDocument.create({ ...newDoc, tenderId: tender.id }, { transaction });
             }
             // create logs
             await createLogs({ action: "create", description: "create tender", module: "tender", createdBy: userId }, transaction);
@@ -67,7 +68,9 @@ class TenderService {
      */
     public static async viewAll() {
         const tenders = await Tender.findAll({
-            include: { model: TenderDocument, as: "tenderDocuments" }
+            include: [{ model: TenderDocument, as: "tenderDocuments" },
+            { model: User, as: "supplier" },
+            { model: Request, as: "request" }]
         });
         return { status: 200, message: 'tenders', data: tenders }
     }
