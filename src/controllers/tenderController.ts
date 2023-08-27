@@ -20,7 +20,7 @@ class TenderController {
             const loggedInUserId = req?.user?.userId;
             const response: any = await TenderService.create(information, loggedInUserId, transaction);
             if (response) {
-                await transaction.commit();
+                // await transaction.commit();
                 return res.status(response.status).json(response);
             }
         } catch (error) {

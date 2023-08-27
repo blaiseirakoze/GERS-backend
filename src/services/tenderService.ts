@@ -19,11 +19,12 @@ class TenderService {
     public static async create(information: any, userId: string, transaction: any) {
         const { documents, ...tenderInfo } = information;
         // check tender exist
-        const tenderFound = await Tender.findOne({ where: { name: tenderInfo.name } });
-        if (tenderFound) {
-            await transaction.rollback();
-            return { status: 409, message: "tender already exist" };
-        }
+        // const tenderFound = await Tender.findOne({ where: { name: tenderInfo.name } });
+        // if (tenderFound) {
+
+        //     await transaction.rollback();
+        //     return { status: 409, message: "tender already exist" };
+        // }
         const tender = await Tender.create(tenderInfo, { transaction });
 
         // return
@@ -38,6 +39,8 @@ class TenderService {
             }
             // create logs
             await createLogs({ action: "create", description: "create tender", module: "tender", createdBy: userId }, transaction);
+            await transaction.commit();
+
             return {
                 status: 201,
                 message: "Success",
