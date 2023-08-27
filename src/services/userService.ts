@@ -93,9 +93,20 @@ class UserService {
     public static async viewAll(role) {
         const where = {}
         if (role) {
-            const rl = await Role.findOne({ where: { name: role } });
-            where['roleId'] = rl.id;
+            if (role === "risa") {
+                const risa = await Role.findOne({ where: { name: role } });
+                const admin = await Role.findOne({ where: { name: "admin" } });
+                console.log();
+                
+                where[Op.or] = [{ roleId: risa.id }, { roleId: admin.id }];
+            } else {
+                const rl = await Role.findOne({ where: { name: role } });
+                where['roleId'] = rl.id;
+            }
+
         }
+        console.log("where ------------------------- ", where);
+        
         const users = await User.findAll({
             where,
             include: [{ model: Role, as: "role" }],
