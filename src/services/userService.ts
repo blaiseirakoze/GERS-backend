@@ -34,7 +34,8 @@ class UserService {
         }
         // generate token
         const userRole = user.role.name;
-        const accessToken = await TokenManager.signIn({ userId: user.id, expiresIn: '1d', userRole, permission: user.Permissions });
+        const userRoleLabel = user.role.label;
+        const accessToken = await TokenManager.signIn({ userId: user.id, expiresIn: '1d', userRole,userRoleLabel, permission: user.Permissions });
         // create logs
         await createLogs({ action: "signin", description: "user signin", module: "user", createdBy: user.id });
         // return

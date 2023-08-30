@@ -137,10 +137,10 @@ class ServiceRequestService {
       for (const doc of files.documents) {
         documents.push(doc.filename);
       }
-    }
+    }    
     // update
     const updatedRequest = await request.update(
-      { ...information, status: "pending", documents: documents ? documents.toString() : information?.documents },
+      { ...information, status: "pending", documents: documents ? documents.toString() : request?.documents },
       { transaction }
     );
 

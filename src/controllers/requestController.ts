@@ -83,6 +83,8 @@ class ServiceRequestController {
       const information = req.body;
       const loggedInUserId = req?.user?.userId;
       const files = req.files;
+      console.log("files -------------------------------- ", files);
+
       const response: any = await RequestService.update(
         id,
         information,

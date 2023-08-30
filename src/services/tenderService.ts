@@ -5,7 +5,7 @@ import { createLogs } from '../helpers/logs';
 import { filter } from '../helpers/common_functions';
 import { Op } from 'sequelize';
 
-const { Tender, TenderDocument, Request, User } = model;
+const { Tender, TenderDocument, Request, User, Role } = model;
 
 /**
  * tender service
@@ -25,7 +25,6 @@ class TenderService {
             return { status: 409, message: "tender already exist" };
         }
         const tender = await Tender.create(tenderInfo, { transaction });
-
         // return
         if (tender) {
             // change request status
@@ -54,7 +53,10 @@ class TenderService {
             where: { id },
             include: [{ model: TenderDocument, as: "tenderDocuments" },
             { model: User, as: "supplier" },
-            { model: Request, as: "request" }]
+            {
+                model: Request, as: "request", include:
+                    { model: User, as: "requestedBy", include: { model: Role, as: "role" } },
+            }]
         });
         if (!tender) {
             return { status: 404, message: "tender not found" };
