@@ -160,6 +160,8 @@ class TenderController {
                 return res.status(response.status).json(response);
             }
         } catch (error) {
+            console.log("error -------------------- ", error);
+            
             return res.status(500).json({ message: 'Internal server error' });
         }
     }

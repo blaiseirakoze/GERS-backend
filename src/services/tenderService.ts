@@ -77,6 +77,18 @@ class TenderService {
         return { status: 200, message: 'tenders', data: tenders }
     }
     /**
+   * datatable
+   * @returns
+   */
+    public static async datatable(query: any) {
+        const tenders = await dataTable(Tender, query, {
+            include: [{ model: TenderDocument, as: "tenderDocuments" },
+            { model: User, as: "supplier" },
+            { model: Request, as: "request" }]
+        });
+        return { status: 200, message: "tenders", data: tenders };
+    }
+    /**
      * update
      * @param information 
      * @returns 
@@ -167,16 +179,6 @@ class TenderService {
                 data: deletedtender,
             };
         }
-    }
-    /**
-     * datatable
-     * @returns 
-     */
-    public static async datatable(query: any) {
-        const tenders = await dataTable(Tender, query, {
-            order: [['createdAt', 'DESC']],
-        });
-        return { status: 200, message: 'datatable', data: tenders }
     }
     /**
      * search
