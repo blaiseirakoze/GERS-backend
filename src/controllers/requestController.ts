@@ -30,7 +30,7 @@ class ServiceRequestController {
       if (response) {
         return res.status(response.status).json(response);
       }
-    } catch (error) {      
+    } catch (error) {
       await transaction?.rollback();
       return res.status(500).json({ message: "Internal server error" });
     }
@@ -65,7 +65,7 @@ class ServiceRequestController {
       if (response) {
         return res.status(response.status).json(response);
       }
-    } catch (error) {      
+    } catch (error) {
       return res.status(500).json({ message: "Internal server error" });
     }
   }
@@ -156,21 +156,21 @@ class ServiceRequestController {
   static async datatable(req: any, res: Response) {
     try {
       const query = req.query;
-      let condition = { requester: req.user.userId };
+      // let condition = { requester: req.user.userId };
+      const loggedInUser = req?.user;
 
-      if (!isEmptyObject(query.info)) {
-        const info = JSON.parse(query.info);
-        condition = { ...info, requester: req.user.userId };
-      }
+      // if (!isEmptyObject(query.info)) {
+      //   const info = JSON.parse(query.info);
+      //   condition = { ...info, requester: req.user.userId };
+      // }
       const response: any = await RequestService.datatable(
         query,
-        condition
+        loggedInUser
       );
       if (response) {
         return res.status(response.status).json(response);
       }
     } catch (error) {
-      console.log(error);
       return res.status(500).json({ message: "Internal server error" });
     }
   }
@@ -275,7 +275,7 @@ class ServiceRequestController {
    */
   static async dashboardAllData(req: any, res: Response) {
     try {
-      const response: any = await RequestService.dashboardAllData( req.user.userId);
+      const response: any = await RequestService.dashboardAllData(req.user.userId);
       if (response) {
         return res.status(response.status).json(response);
       }

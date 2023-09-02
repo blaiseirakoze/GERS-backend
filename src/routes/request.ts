@@ -11,7 +11,6 @@ router.put("/update/:id", multerUploads, RequestController.update);
 router.put("/change-status/:id", RequestController.changeStatus);
 router.delete("/delete/:id", RequestController.delete);
 router.get("/datatable", RequestController.datatable);
-router.get("/datatable/incoming", RequestController.incomingRequestDatatable);
 router.get("/search", RequestController.search);
 router.get("/dashboard", RequestController.dashboardData);
 router.get("/all-dashboard", RequestController.dashboardAllData);

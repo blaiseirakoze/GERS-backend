@@ -140,7 +140,7 @@ class ServiceRequestService {
     }
     // update
     const updatedRequest = await request.update(
-      { ...information, status: "pending", documents: documents ? documents.toString() : information?.documents },
+      { ...information, status: "pending", documents: documents ? documents.toString() : request?.documents },
       { transaction }
     );
 
@@ -242,17 +242,25 @@ class ServiceRequestService {
    * datatable
    * @returns
    */
-  public static async datatable(query: any, condition: any) {
-
+  public static async datatable(query: any, loggedInUser: any) {
+    const { role, userId } = loggedInUser;
+    const where = {};
+    if (role != "risa") {
+      where["requester"] = userId;
+    }
     const serviceRequests = await dataTable(Request, query, {
-      where: condition,
-      order: [["createdAt", "DESC"]],
+      order: [['requestProcess', 'createdAt', 'ASC']],
+      where: where,
       include: [
-        // { model: User, as: "requestedBy", include: { model: Employee } },
-        { model: User, as: "approvedBy" },
+        { model: User, as: "requestedBy", include: { model: Role, as: "role" } },
+        {
+          model: RequestProcess,
+          as: "requestProcess",
+          include: { model: User, as: "createdBy" },
+        },
       ],
     });
-    return { status: 200, message: "datatable", data: serviceRequests };
+    return { status: 200, message: "service requests", data: serviceRequests };
   }
   /**
    * datatable
