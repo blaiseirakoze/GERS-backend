@@ -35,7 +35,7 @@
 -   Navigate to the project repository
 
 ```
-    > cd nppa
+    > cd GERS-backend
 ```
 
 -   Generate .env
